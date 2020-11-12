@@ -24,9 +24,11 @@
     "url": "https://github.com/Sharcoux/simple-ql-cli/issues"
   },
   "homepage": "https://github.com/Sharcoux/simple-ql-cli#readme",
+  "dependencies": {
+    "axios": "^0.21.0"
+  },
   "devDependencies": {
     "@types/node": "^14.14.7",
-    "axios": "^0.21.0",
     "eslint": "^7.13.0",
     "eslint-config-standard": "^16.0.1",
     "eslint-plugin-import": "^2.22.1",
