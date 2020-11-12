@@ -1,0 +1,40 @@
+{
+  "name": "simple-ql-cli",
+  "version": "1.0.0",
+  "description": "Command Line Interface for SimpleQL tools",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Sharcoux/simple-ql-cli.git"
+  },
+  "keywords": [
+    "SimpleQL",
+    "cli",
+    "database"
+  ],
+  "author": "fbillioud",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sharcoux/simple-ql-cli/issues"
+  },
+  "homepage": "https://github.com/Sharcoux/simple-ql-cli#readme",
+  "devDependencies": {
+    "@types/node": "^14.14.7",
+    "axios": "^0.21.0",
+    "eslint": "^7.13.0",
+    "eslint-config-standard": "^16.0.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "release-it": "^14.2.1"
+  },
+  "bin": {
+    "simpleql": "index.js"
+  }
+}
