@@ -31,9 +31,7 @@ rl.on('line', (line) => {
   switch (command) {
     case 'login': login(req); break
     case 'req':
-    case 'request':
-      request(req)
-      break
+    case 'request': request(req); break
     case 'jwt': setJWT(req); break
     default: help(); break
   }
@@ -62,7 +60,7 @@ async function login (req) {
       logError(`We couldn't find the jwt after login. Maybe the request failed. Here is the results: ${JSON.stringify(result, null, 4)}`)
     } else {
       const { jwt, reservedId } = result[tableName][0]
-      setJWT(jwt)
+      axios.defaults.headers.common.Authorization = 'Bearer ' + jwt
       logSuccess(`User ${reservedId} got logged in.`)
     }
   } catch (err) {
@@ -106,12 +104,12 @@ async function request (req) {
  * @param {string?} jwt The jwt token or undefined to remove
  */
 function setJWT (jwt) {
-  try {
-    jwt
-      ? axios.defaults.headers.common.Authorization = 'Bearer ' + jwt
-      : delete axios.defaults.headers.common.Authorization
-  } catch (err) {
-    if (err.code !== 'ENOENT') throw err
+  if (jwt) {
+    axios.defaults.headers.common.Authorization = 'Bearer ' + jwt
+    logSuccess('jwt token succesfully applied.')
+  } else {
+    delete axios.defaults.headers.common.Authorization
+    logSuccess('The user got logged out.')
   }
 }
 
@@ -120,7 +118,7 @@ function setJWT (jwt) {
  * @param {string} message The message to log
  */
 function logError (message) {
-  console.log('\x1b[31m', message, '\x1b[0m')
+  console.log('\x1b[31m' + message + '\x1b[0m')
 }
 
 /**
@@ -128,5 +126,5 @@ function logError (message) {
  * @param {string} message The message to log
  */
 function logSuccess (message) {
-  console.log('\x1b[32m', message, '\x1b[0m')
+  console.log('\x1b[32m' + message + '\x1b[0m')
 }
