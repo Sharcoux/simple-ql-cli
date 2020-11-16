@@ -19,7 +19,7 @@ console.log(`\x1b[90mRequests will reach ${url}. To change the port, edit PORT e
 console.log('Use \x1b[1mhelp\x1b[0m to see the available commands')
 
 function completer (line) {
-  const completions = 'help login request jwt'.split(' ')
+  const completions = 'help login request jwt logout admin'.split(' ')
   const hits = completions.filter((c) => c.startsWith(line))
   // Show all completions if none found
   return [hits.length ? hits : completions, line]
@@ -30,6 +30,8 @@ rl.on('line', (line) => {
   const req = rest.join(' ')
   switch (command) {
     case 'login': login(req); break
+    case 'logout': logout(); break
+    case 'admin': admin(req); break
     case 'req':
     case 'request': request(req); break
     case 'jwt': setJWT(req); break
@@ -37,13 +39,36 @@ rl.on('line', (line) => {
   }
 })
 
+/** Hust display details on the API */
 function help () {
   console.log(`\x1b[34mYou can use the following commands:
-    - jwt: {string?} Set a jwt or remove it if empty
-    - req: {string} Send a SimpleQL request
+    - jwt: {string} Set a jwt token to log a user
+    - request: {string} Send a SimpleQL request
     - login: {string} Retrieve the jwt token from the next request and adds it to the next requests
+    - logout: Remove the previous jwt token, logging out the user.
+    - admin: {string} Log as admin with the database private key. Needs to be executed within the server project folder to access private.key
     - help: This help message
     \x1b[0m`)
+}
+
+/**
+ * Log as admin to the SimpleQL database. Subsequent request will have admin rights until the next call to logout
+ * @param {string} databaseKey The value of database.privateKey provided to SimpleQL
+ */
+async function admin (databaseKey) {
+  console.log(`The value: '${databaseKey}' that you provided should be the same as the value of database.privateKey provided to SimpleQL.`)
+  try {
+    /** @type {import('jsonwebtoken')} */
+    const jwt = require('jsonwebtoken')
+    /** @type {import('fs')} */
+    const fs = require('fs')
+    const privateKey = fs.readFileSync('private.key')
+    const token = jwt.sign({ id: databaseKey }, privateKey, { expiresIn: '2 days' })
+    setJWT(token)
+  } catch (err) {
+    if (err.code === 'ENOENT:') logError('You need to execute this command in the root folder of the SimpleQL server, where lies the file private.key, or download it.')
+    else logError(err.message)
+  }
 }
 
 /**
@@ -104,13 +129,17 @@ async function request (req) {
  * @param {string?} jwt The jwt token or undefined to remove
  */
 function setJWT (jwt) {
-  if (jwt) {
+  if (!jwt) logError('No jwt token provided.')
+  else {
     axios.defaults.headers.common.Authorization = 'Bearer ' + jwt
     logSuccess('jwt token succesfully applied.')
-  } else {
-    delete axios.defaults.headers.common.Authorization
-    logSuccess('The user got logged out.')
   }
+}
+
+/** Log the previous user out. */
+function logout () {
+  delete axios.defaults.headers.common.Authorization
+  logSuccess('The user got logged out.')
 }
 
 /**
