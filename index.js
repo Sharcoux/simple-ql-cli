@@ -63,7 +63,7 @@ async function admin (databaseKey) {
     /** @type {import('fs')} */
     const fs = require('fs')
     const privateKey = fs.readFileSync('private.key')
-    const token = jwt.sign({ id: databaseKey }, privateKey, { expiresIn: '2 days' })
+    const token = jwt.sign({ id: databaseKey }, privateKey, { algorithm: 'RS256', expiresIn: '2 days' })
     setJWT(token)
   } catch (err) {
     if (err.code === 'ENOENT:') logError('You need to execute this command in the root folder of the SimpleQL server, where lies the file private.key, or download it.')
