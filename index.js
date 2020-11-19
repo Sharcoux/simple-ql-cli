@@ -7,15 +7,20 @@ const axios = require('axios')
 /** @type {import('readline')} */
 const readline = require('readline')
 
+const URL = 'http://localhost'
 const PORT = process.env.PORT || 80
-const url = `http://localhost:${PORT}`
+const url = `${URL}:${PORT}`
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
   completer
 })
 
-console.log(`\x1b[90mRequests will reach ${url}. To change the port, edit PORT env variable.\x1b[0m`)
+console.log(`\x1b[90mRequests will reach ${url}.
+  To change the port, edit PORT env variable.\x1b[0m
+  To change the url, edit the URL env variable.
+  Example: export URL=https://website.com
+`)
 console.log('Use \x1b[1mhelp\x1b[0m to see the available commands')
 
 function completer (line) {
@@ -156,4 +161,11 @@ function logError (message) {
  */
 function logSuccess (message) {
   console.log('\x1b[32m' + message + '\x1b[0m')
+}
+
+module.exports = {
+  admin,
+  login,
+  request,
+  logout
 }
