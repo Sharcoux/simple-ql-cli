@@ -119,7 +119,7 @@ async function request (req) {
   } catch (err) {
     /** @type {import('axios').AxiosError} **/
     const error = err
-    if (!error.isAxiosError) logError(error.message)
+    if (!error.response) logError(error.message)
     else logError(error.response.data)
   }
 }
