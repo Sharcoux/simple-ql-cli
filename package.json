@@ -1,6 +1,6 @@
 {
   "name": "simple-ql-cli",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Command Line Interface for SimpleQL tools",
   "main": "index.js",
   "publishConfig": {
