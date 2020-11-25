@@ -17,9 +17,9 @@ const rl = readline.createInterface({
 })
 
 console.log(`\x1b[90mRequests will reach ${url}.
-  To change the port, edit PORT env variable.\x1b[0m
+  To change the port, edit PORT env variable.
   To change the url, edit the URL env variable.
-  Example: export URL=https://website.com
+  Example: export URL=https://website.com\x1b[0m
 `)
 console.log('Use \x1b[1mhelp\x1b[0m to see the available commands')
 
