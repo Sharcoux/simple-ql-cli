@@ -107,9 +107,9 @@ async function login (req) {
  * @returns {Promise<import('axios').AxiosResponse>}
  */
 function sendRequest (req) {
-  const correctJson = req.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ')
-  const correctQuotes = correctJson.replace(/'([^\s,{[\]}]+)'/g, '"$1"')
-  return axios.post(url, JSON.parse(correctQuotes))
+  // eslint-disable-next-line no-eval
+  const json = typeof req === 'string' ? eval('(' + req + ')') : req
+  return axios.post(url, json)
 }
 
 /**
