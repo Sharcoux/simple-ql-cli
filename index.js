@@ -115,12 +115,13 @@ function sendRequest (req) {
 /**
  * Send a SimplQL request to the endpoint
  * @param {object} req The simple-ql request
- * @returns {Promise<void>}
+ * @returns {Promise<Object>}
  */
 async function request (req) {
   try {
     const result = await sendRequest(req)
     console.log(result.data)
+    return result.data
   } catch (err) {
     /** @type {import('axios').AxiosError} **/
     const error = err
