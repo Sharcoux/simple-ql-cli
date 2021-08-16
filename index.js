@@ -9,7 +9,9 @@ const readline = require('readline')
 
 const URL = process.env.URL || 'http://localhost'
 const PORT = process.env.PORT || 80
-const url = `${URL}:${PORT}`
+const [protocol, , domain, ...pathParts] = URL.split('/')
+const path = pathParts.join('/')
+const url = `${protocol}://${domain}:${PORT}/${path}`
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
