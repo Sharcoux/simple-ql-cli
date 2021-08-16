@@ -7,7 +7,7 @@ const axios = require('axios')
 /** @type {import('readline')} */
 const readline = require('readline')
 
-const URL = 'http://localhost'
+const URL = process.env.URL || 'http://localhost'
 const PORT = process.env.PORT || 80
 const url = `${URL}:${PORT}`
 const rl = readline.createInterface({
